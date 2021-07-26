@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: daemonset-test
+  namespace: kube-system
+  labels:
+    k8-app: new-app98
+spec:
+  selector:
+    matchLabels:
+      name: daemonset-test
+  template:
+    metadata:
+      labels:
+        name: daemonset-test
+    spec:
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+        effect: NoSchedule
+      containers:
+      - name: daemonset-test
+        image: gcr.io/google-samples/node-hello:1.0
+        resources:
+          limits:
+            memory: 200Mi
+          requests:
+            cpu: 100m
+            memory: 200Mi
+      terminationGracePeriodSeconds: 30
